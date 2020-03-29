@@ -8,7 +8,7 @@ my @allfile = glob "std.json";
 my %results = ();
 
 foreach my $filename (@allfile) {
-	my $outfilename = "routput_".time.$filename;
+	my $outfilename = "results/routput_".time.$filename;
 	open (OutFH, ">", $outfilename) or die "$!";
 
 	open(FH, $filename) or die "$!";
@@ -21,7 +21,7 @@ $d =~ s/rgba\(60,\s*50,\s*181,?\s*1\)/rgba\(0,0,128,1\)/g;
 $d =~ s/rgba\(0,\s*0,\s*0,?\s*0\)/rgba\(0,0,128,1\)/g;
 $d =~ s/rgba\(235,\s*130,\s*120,?\s*0.75\)/rgba\(0,0,128,1\)/g;
 $d =~ s/rgb\(0,\s*176,\s*236\)/rgba\(0,0,128,1\)/g;
-$d =~ s/rgba\(255,\s*255,\s*255,?\s*1\)/rgba\(0,0,128,1\)/g;
+$d =~ s/rgba\(255,\s*255,\s*255,?\s*1\)/rgba\(255,255,255,1\)/g;
 $d =~ s/rgb\(230,\s*146,\s*18\)/rgba\(0,0,128,1\)/g;
 $d =~ s/rgb\(200,\s*223,\s*150\)/rgba\(0,0,128,1\)/g;
 $d =~ s/rgba\(19,\s*97,\s*69,?\s*1\)/rgba\(0,0,128,1\)/g;
@@ -46,7 +46,7 @@ $d =~ s/rgb\(61,\s*151,\s*56\)/rgba\(0,0,128,1\)/g;
 $d =~ s/rgba\(20,\s*90,\s*255,?\s*1\)/rgba\(0,0,128,1\)/g;
 $d =~ s/rgba\(100,\s*100,\s*100,?\s*0\)/rgba\(0,0,128,1\)/g;
 $d =~ s/rgb\(190,\s*210,\s*255\)/rgba\(0,0,128,1\)/g;
-$d =~ s/rgba\(255,\s*255,\s*255,?\s*0\)/rgba\(0,0,128,1\)/g;
+$d =~ s/rgba\(255,\s*255,\s*255,?\s*0\)/rgba\(255,255,255,1\)/g;
 $d =~ s/rgb\(255,\s*135,\s*75\)/rgba\(0,0,128,1\)/g;
 $d =~ s/rgb\(124,\s*145,\s*196\)/rgba\(0,0,128,1\)/g;
 $d =~ s/rgba\(128,\s*128,\s*128,?\s*1\)/rgba\(0,0,128,1\)/g;
