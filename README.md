@@ -1,4 +1,4 @@
-# gsi-style-color-analysis-pale
+# gsi-style-color-analysis
 機械的に色を置き換えるツールで、いろいろな地理院地図Vector用スタイルを作ってみるレポジトリ。
 
 ![変換処理を行ったスタイルのサンプル](image/toppage_sample.png "変換処理を行ったスタイルのサンプル")
