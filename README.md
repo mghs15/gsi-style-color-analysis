@@ -154,6 +154,13 @@
 ### 試行錯誤
 あとは、`colorlist_(生成日時).html`を見ながら、「いい感じ」と思えるような変換表になるまでrgbの変換部分の調整を行う。時には、最終的に`s1-style-color-replace.pl`で生成されたスタイルを手動で調整することも必要。
 
+## Mapbox Style Specに準拠したスタイルに変換したい場合
+地理院地図Vectorのスタイルは、そのままでは、素のMapbox GL JSでは利用できません。[gsi-vector-style-converter](https://github.com/mghs15/gsi-vector-style-converter)レポジトリで、地理院地図VectorのスタイルをMapbox GL JSでも使えるMapbox Style Spec準拠のスタイルに変換するツールを用意しております。
+
+素のMapbox GL JSで、ハッチング表現（建物、湿地など）の実現には、別途ハッチング用のデータを生成の上、読み込む必要があります。（ハッチング用データ生成については、[gsi-vector-style-converter](https://github.com/mghs15/gsi-vector-style-converter)で行えます。）
+
+ただ、面倒くさいという方は、[gsi-vector-mapbox-gl-js-without-hatch](https://github.com/mghs15/gsi-vector-mapbox-gl-js-without-hatch)レポジトリでの検討を参考に、ベースとなるスタイルJSONファイルのハッチ表現を塗りつぶし表現に変換したうえで、`perl-style-color-analysis.pl`、`s2-style-color-replace.pl`の処理にかけることもできます。
+
 ## 成果
 * 今まで作成した変換式・変換表を含む`perl-style-color-analysis.pl`、`s1-style-color-replace.pl`は「archive」フォルダに置いてあります。
 * 今まで作成したスタイルファイルは「style」フォルダに置いてあります。
