@@ -88,7 +88,7 @@ foreach my $filename (@allfile) {
 			
 			my $code = "\$d =~ s/".$1."\\(".$2.",\\s*".$3.",\\s*".$4.",?\\s*".$5."\\)/rgba\\(".$r.",".$g.",".$b.",".$5."\\)/g;print OutFH \$d;next;";
 			if($class > 99){
-				$code = "if\( \( \$d =~ /".$1."\\(".$2.",\\s*".$3.",\\s*".$4.",?\\s*".$5."\\)/\ \) && \( \$d =~ /text-/\ \) \)\{".$code."\}\n";
+				$code = "if\( \( \$d =~ /text-/\ \) && \( \$d =~ /".$1."\\(".$2.",\\s*".$3.",\\s*".$4.",?\\s*".$5."\\)/\ \) \)\{".$code."\}\n";
 			}else{
 				$code = "if\( \( \$d =~ /".$1."\\(".$2.",\\s*".$3.",\\s*".$4.",?\\s*".$5."\\)/\ \) \)\{".$code."\}\n";
 			}
@@ -130,6 +130,7 @@ close(OutFH);
 my $outfilecode = "tmp_perlcode.txt";
 open (OutFH, ">", $outfilecode) or die "$!";
 foreach my $key (sort{$b cmp $a} keys(%perlcode)){
+	$key =~ s/next/last/;
 	print OutFH $key;
 }
 close(OutFH);
