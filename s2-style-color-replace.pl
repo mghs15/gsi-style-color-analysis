@@ -30,11 +30,12 @@ foreach my $filename (@allfile) {
 			foreach my $perlcode (@codelines) {
 				eval $perlcode;
 			}
+		}else{
+			print OutFH $d;
 		}
 
 #insert end  ----------------------
 	
-		print OutFH $d;
 	}
 	close(FH);
 	close(OutFH);
