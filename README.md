@@ -154,6 +154,8 @@
 ### 試行錯誤
 あとは、`colorlist_(生成日時).html`を見ながら、「いい感じ」と思えるような変換表になるまでrgbの変換部分の調整を行う。時には、最終的に`s1-style-color-replace.pl`で生成されたスタイルを手動で調整することも必要。
 
+また、rgbではなく、hslの方が機械的な変換に適しているような気がし始めたので、rgbをまずhslに置き換えたうえで変換表を作成するための`hsl-style-color-analysis.pl`を試作中。
+
 ## Mapbox Style Specに準拠したスタイルに変換したい場合
 地理院地図Vectorのスタイルは、そのままでは、素のMapbox GL JSでは利用できません。[gsi-vector-style-converter](https://github.com/mghs15/gsi-vector-style-converter)レポジトリで、地理院地図VectorのスタイルをMapbox GL JSでも使えるMapbox Style Spec準拠のスタイルに変換するツールを用意しております。
 
@@ -167,3 +169,4 @@
 
 ## 参考文献
 地理院地図Vector https://github.com/gsi-cyberjapan/gsimaps-vector-experiment
+HSL and HSV (Wikipedia) https://en.wikipedia.org/wiki/HSL_and_HSV
