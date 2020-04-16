@@ -168,5 +168,5 @@
 * 今まで作成したスタイルファイルは「style」フォルダに置いてあります。
 
 ## 参考文献
-地理院地図Vector https://github.com/gsi-cyberjapan/gsimaps-vector-experiment
-HSL and HSV (Wikipedia) https://en.wikipedia.org/wiki/HSL_and_HSV
+* 地理院地図Vector https://github.com/gsi-cyberjapan/gsimaps-vector-experiment
+* HSL and HSV (Wikipedia) https://en.wikipedia.org/wiki/HSL_and_HSV
