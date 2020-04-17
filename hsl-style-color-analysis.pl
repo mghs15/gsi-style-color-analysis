@@ -9,6 +9,7 @@ my @allfile = glob "*.json";
 my %results = ();
 my %perlcode = ();
 my %colorlist = ();
+my %hsllist = ();
  
 
 sub calcsl {
@@ -80,6 +81,55 @@ sub rgb2hsl {
 	return $hsl;
 }
 
+sub hsl2rgb {
+	my ($h, $s, $l) = @_;
+	my $part = 2*$l-1;
+	my $max = 0;
+	my $min = 0;
+	
+	if($part >= 0){
+		$max = $l + ($s*(1-$part)/2);
+		$min = $l - ($s*(1-$part)/2);
+	}else{
+		$max = $l + ($s*(1+$part)/2);
+		$min = $l - ($s*(1+$part)/2);
+	}
+	
+	my $r=0; my $g=0; my $b=0; 
+	
+	if(($h >= 0) && ($h < 60)){
+		$r = $max;
+		$g = $min + ($max-$min)*($h)/60;
+		$b = $min;
+	}elsif($h < 120){
+		$r = $min + ($max-$min)*(120-$h)/60;
+		$g = $max;
+		$b = $min;
+	}elsif($h < 180){
+		$r = $min;
+		$g = $max;
+		$b = $min + ($max-$min)*($h-120)/60;
+	}elsif($h < 240){
+		$r = $max;
+		$g = $min + ($max-$min)*(240-$h)/60;
+		$b = $min;
+	}elsif($h < 300){
+		$r = $min + ($max-$min)*($h-120)/60;
+		$g = $max;
+		$b = $min;
+	}else{
+		$r = $max;
+		$g = $min;
+		$b = $min + ($max-$min)*(360-$h)/60;
+	}
+	
+	$r = floor($r*255);
+	$g = floor($g*255);
+	$b = floor($b*255);
+	
+	my $rgb = {r => $r, g => $g, b => $b};
+	return $rgb;
+}
 
 foreach my $filename (@allfile) {
 	my @outfile = ();
@@ -94,12 +144,18 @@ foreach my $filename (@allfile) {
 			my $H = floor($hsl->{h});
 			my $S = floor($hsl->{s});
 			my $L = floor($hsl->{l});
+			
+			my $rgb = hsl2rgb($H, $S/100, $L/100);
+			my $rk = $rgb->{r};
+			my $gk = $rgb->{g};
+			my $bk = $rgb->{b};
+			
 
 			
-			print($2.",".$3.",".$4." -> ".$H.",".$S.",".$L."\n");
-			
+			print($2.",".$3.",".$4." -> ".$H.",".$S.",".$L."->".$rk.",".$gk.",".$bk."\n");
+#			print($2.",".$3.",".$4." -> ".$H.",".$S.",".$L."\n");
 
-			# $2 R 赤; $3 G 緑; $4 B 青 ######################################
+			# $H $S $L -> $HC $SC $LS ######################################
 			my $red = $2; 
 			my $green = $3;
 			my $blue = $4;
@@ -121,8 +177,8 @@ foreach my $filename (@allfile) {
 					$class = -100;
 				}elsif($red > 169){ #薄い部分
 					$r = $red;
-					$g = $red;
-					$b = $red;
+					$g = 255;
+					$b = floor(($red-145)*255/110);
 					$class = -100;
 				}else{
 					$r = $red;
@@ -137,9 +193,9 @@ foreach my $filename (@allfile) {
 					$b = $blue;
 					$class = -102;
 				}else{
-					$r = $red;
-					$g = $green;
-					$b = $blue;
+					$r = 255;
+					$g = 100;
+					$b = 100;
 					$class = 1;
 				}
 			}elsif( ($green >= $red) && ($green > $blue) ){ #緑系統（g=bの蛍光っぽい水色系統含む）
@@ -149,16 +205,16 @@ foreach my $filename (@allfile) {
 					$b = $blue;
 					$class = 101;
 				}else{
-					$r = $red;
-					$g = $green;
-					$b = $blue;
+					$r = 0 ;
+					$g = 140;
+					$b = 0;
 					$class = 1;
 				}
 			}else{ #青～紫系統
 				if($red == 190){ #rgba(190,210,255,1) --- 水域の色は印象が大きいので、指定してもよいかもしれない。
-					$r = $red;
-					$g = $green;
-					$b = $blue;
+					$r = 255;
+					$g = 255;
+					$b = 200;
 					$class = -103;
 				}else{
 					$r = $red;
@@ -167,6 +223,7 @@ foreach my $filename (@allfile) {
 					$class = 1;
 				}
 			}
+			
 			#memo
 			# $r = $red > 150 ? $red : 150;
 			# 255 - ceil(($red + $green + $blue)/3);
@@ -183,9 +240,12 @@ foreach my $filename (@allfile) {
 			#のちのち、ソート順で、$d =~ /text-color/ を先に処理させる。
 			
 			my $rgba = "<tr><td>"."rgba(".$2.",".$3.",".$4.",".$5.")"."</td><td><span style='background:rgba(".$2.",".$3.",".$4.",".$5.");'>"."_________"."</span></td><td>"."rgba(".$r.",".$g.",".$b.",".$5.")"."</td><td><span style='background:rgba(".$r.",".$g.",".$b.",".$5.");'>"."__________"."</span></td></tr>"."\n";
+			my $hsla = "<tr><td>"."rgba(".$2.",".$3.",".$4.",".$5.")"."</td><td><span style='background:rgba(".$2.",".$3.",".$4.",".$5.");'>"."_________"."</span></td><td>"."hsla(".$H.",".$S."%,".$L."%,".$5.")"."</td><td><span style='background:hsla(".$H.",".$S."%,".$L."%,".$5.");'>"."__________"."</span></td></tr>"."\n";
+
 			$results{$color}++;
 			$perlcode{$code}++;
 			$colorlist{$rgba}++;
+			$hsllist{$hsla}++;
 		}
 	}
 	close(FH);
@@ -223,6 +283,14 @@ foreach my $key (sort{$b cmp $a} keys(%perlcode)){
 }
 close(OutFH);
 
+
+open (OutFH, ">", "hsllist.html") or die "$!";
+print OutFH "<table>\n";
+foreach my $key (sort{$b cmp $a} keys(%hsllist)){
+	print OutFH $key;
+}
+print OutFH "</table>\n";
+close(OutFH);
 
 print  "\n---------------------------\n";
 print  "\n";
